@@ -22,7 +22,8 @@ if (isDef(wsname)) {
 document.querySelector('header>p').textContent = decodeURIComponent(wsname);
 
 // Create a WebSocket connection to the server
-const ws = new WebSocket("ws://" + window.location.host+ "/socket");
+// const ws = new WebSocket("ws://" + window.location.host+ "/socket");
+const ws = new WebSocket("ws://localhost:1234");
 
 // We get notified once connected to the server
 ws.onopen = (event) => {
