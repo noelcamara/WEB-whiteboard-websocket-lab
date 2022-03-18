@@ -18,28 +18,39 @@ wss.broadcast = function broadcast(message) {
     client.send(message);
   });
 };
-
+let nbCanvas = 1;
+let tab = [];
 // Register a listener for new connections on the WebSocket.
 wss.on('connection', function(client, request) {
+    client.send(JSON.stringify({ key: "F-HDR};R`oTayx=8Hs4", idCanvas: 1 }));
 
+  tab.forEach(dessin => {
+    client.send(dessin);
+  });
   // retrieve the name in the cookies
   var cookies = request.headers.cookie.split(';');
   var wsname = cookies.find((c) => {
     return c.match(/^\s*wsname/) !== null;
   });
   wsname = wsname.split('=')[1];
-  console.log("first connexion from", wsname);
 
   // greet the newly connected user
   client.send('Welcome, ' + decodeURIComponent(wsname) + '!');
 
   // Register a listener on each message of each connection
   client.on('message', function(message) {
-
-    var cli = '[' + decodeURIComponent(wsname) + '] ';
-    console.log("message from", cli);
-    // when receiving a message, broadcast it to all the connected clients
-    wss.broadcast(cli + message);
+    if (message.includes("F-HDR};R`oTayx=8Hs4")) {
+      nbCanvas++;
+      wss.broadcast(message);
+    } else if (message.includes("RLfPPLof;NQo$S4@D[N")) {
+      tab.push(message);
+      wss.broadcast(message);
+    } else {
+      var cli = '[' + decodeURIComponent(wsname) + '] ';
+      console.log("message from", cli);
+      // when receiving a message, broadcast it to all the connected clients
+      wss.broadcast(cli + message);
+    }
   });
 });
 
